@@ -1,0 +1,282 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma/generate"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
+}
+
+model User {
+  id            String  @id @default(cuid())
+  name          String
+  email         String  @unique
+  password      String?
+  officialEmail String?
+  image         String?
+  departmentId  String
+  roleId        String
+
+  accounts      Account[]
+  sessions      Session[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+  department    Department          @relation(fields: [departmentId], references: [id])
+  role          Role                @relation(fields: [roleId], references: [id])
+  tasks         Task[]              @relation("AssignedTasks")
+  comments      Comment[]
+  notifications Notification[]
+  activityLogs  ActivityLog[]
+  assignedSteps AssignedStep[]
+  exitProcess   ExitProcess?
+  assets        CompanyAsset[]
+  exitSteps     ExitChecklistStep[]
+  exitFeedbacks ExitFeedback[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  permissions RolePermission[]
+  users       User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  label       String
+  permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model Department {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  users     User[]
+  projects  Project[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Project {
+  id           String    @id @default(cuid())
+  name         String
+  departmentId String
+  startDate    DateTime
+  endDate      DateTime?
+
+  department Department @relation(fields: [departmentId], references: [id])
+  tasks      Task[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  status      String
+  priority    String
+  dueDate     DateTime?
+  assigneeId  String
+  projectId   String
+
+  assignee  User      @relation(name: "AssignedTasks", fields: [assigneeId], references: [id])
+  project   Project   @relation(fields: [projectId], references: [id])
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Comment {
+  id      String @id @default(cuid())
+  content String
+  userId  String
+  taskId  String
+
+  user      User     @relation(fields: [userId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id      String  @id @default(cuid())
+  userId  String
+  type    String
+  message String
+  read    Boolean @default(false)
+
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String
+  action      String
+  entity      String?
+  entityId    String?
+  description String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model OnboardingStep {
+  id          String  @id @default(cuid())
+  title       String
+  description String?
+  url         String?
+  order       Int
+  isActive    Boolean @default(true)
+
+  assigned AssignedStep[]
+}
+
+model AssignedStep {
+  id          String    @id @default(cuid())
+  stepId      String
+  userId      String
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  user User           @relation(fields: [userId], references: [id])
+  step OnboardingStep @relation(fields: [stepId], references: [id])
+}
+
+model ExitProcess {
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  reason       String?
+  lastDay      DateTime
+  handoverNote String?
+
+  user           User                @relation(fields: [userId], references: [id])
+  checklistSteps ExitChecklistStep[]
+  createdAt      DateTime            @default(now())
+}
+
+model CompanyAsset {
+  id         String  @id @default(cuid())
+  name       String
+  assignedTo String?
+  status     String // e.g., "Returned", "In Use"
+
+  user      User?    @relation(fields: [assignedTo], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ExitChecklistItem {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+  isMandatory Boolean @default(true)
+
+  checklistSteps ExitChecklistStep[]
+}
+
+model ExitChecklistStep {
+  id            String    @id @default(cuid())
+  userId        String
+  checklistId   String
+  completed     Boolean   @default(false)
+  completedAt   DateTime?
+  exitProcessId String // ✅ FK to ExitProcess
+
+  exitProcess ExitProcess @relation(fields: [exitProcessId], references: [id])
+
+  user      User              @relation(fields: [userId], references: [id])
+  checklist ExitChecklistItem @relation(fields: [checklistId], references: [id])
+}
+
+model ExitFeedback {
+  id        String   @id @default(cuid())
+  userId    String
+  feedback  String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
