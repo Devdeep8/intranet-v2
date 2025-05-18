@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../prisma/generate"
 }
 
 datasource db {
@@ -75,17 +74,16 @@ model User {
   name          String
   email         String  @unique
   password      String?
-  officialEmail String?
   image         String?
-  departmentId  String
-  roleId        String
+  departmentId  String?
+  roleId        String?
 
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
-  department    Department          @relation(fields: [departmentId], references: [id])
-  role          Role                @relation(fields: [roleId], references: [id])
+  department    Department?          @relation(fields: [departmentId], references: [id])
+  role          Role?                @relation(fields: [roleId], references: [id])
   tasks         Task[]              @relation("AssignedTasks")
   comments      Comment[]
   notifications Notification[]

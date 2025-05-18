@@ -1,17 +1,7 @@
-
-
-
-
-export default function RootLayout({
+export default function BlogLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-   <div>
-
-        {children}
-   </div>
-
-  );
+}: {
+  children: React.ReactNode
+}) {
+  return <section>{children}</section>
 }

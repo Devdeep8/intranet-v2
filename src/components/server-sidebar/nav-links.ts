@@ -1,0 +1,43 @@
+
+import {
+  BarChart3,
+  Bell,
+  FileText,
+  FolderTree,
+  Home,
+  LayoutDashboard,
+  Network,
+  Package,
+  Shield,
+  Users,
+  Search,
+} from "lucide-react";
+
+
+
+export const navLinks = [
+  {
+    label: "My Workspace",
+    items: [
+      { title: "Dashboard", href: "/dashboard", icon: Home },
+      { title: "My Tasks", href: "/tasks", icon: FileText },
+      { title: "Projects", href: "/projects", icon: FolderTree },
+      { title: "My Department", href: "/departments", icon: Users },
+    ],
+  },
+  {
+    label: "Operations",
+    items: [
+      { title: "Onboarding", href: "/onboarding", icon: Shield },
+      { title: "Exit Process", href: "/exit-process", icon: Network },
+      { title: "Company Assets", href: "/assets", icon: Package },
+    ],
+  },
+  {
+    label: "Personal",
+    items: [
+      { title: "Notifications", href: "/notifications", icon: Bell },
+      { title: "Activity Logs", href: "/activity", icon: BarChart3 },
+    ],
+  },
+];
