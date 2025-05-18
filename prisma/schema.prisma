@@ -75,24 +75,20 @@ model User {
   email         String  @unique
   password      String?
   image         String?
-  departmentId  String?
+  departmentId  String
   roleId        String?
 
   accounts      Account[]
   sessions      Session[]
   // Optional for WebAuthn support
   Authenticator Authenticator[]
-  department    Department?          @relation(fields: [departmentId], references: [id])
+  department    Department          @relation(fields: [departmentId], references: [id])
   role          Role?                @relation(fields: [roleId], references: [id])
   tasks         Task[]              @relation("AssignedTasks")
+  project       Project[]
   comments      Comment[]
   notifications Notification[]
   activityLogs  ActivityLog[]
-  assignedSteps AssignedStep[]
-  exitProcess   ExitProcess?
-  assets        CompanyAsset[]
-  exitSteps     ExitChecklistStep[]
-  exitFeedbacks ExitFeedback[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -142,7 +138,8 @@ model Project {
   departmentId String
   startDate    DateTime
   endDate      DateTime?
-
+  projectMangerId String
+  projectManger User        @relation(fields: [projectMangerId], references: [id])
   department Department @relation(fields: [departmentId], references: [id])
   tasks      Task[]
   createdAt  DateTime   @default(now())
@@ -202,79 +199,4 @@ model ActivityLog {
   user User @relation(fields: [userId], references: [id])
 }
 
-model OnboardingStep {
-  id          String  @id @default(cuid())
-  title       String
-  description String?
-  url         String?
-  order       Int
-  isActive    Boolean @default(true)
 
-  assigned AssignedStep[]
-}
-
-model AssignedStep {
-  id          String    @id @default(cuid())
-  stepId      String
-  userId      String
-  completed   Boolean   @default(false)
-  completedAt DateTime?
-
-  user User           @relation(fields: [userId], references: [id])
-  step OnboardingStep @relation(fields: [stepId], references: [id])
-}
-
-model ExitProcess {
-  id           String   @id @default(cuid())
-  userId       String   @unique
-  reason       String?
-  lastDay      DateTime
-  handoverNote String?
-
-  user           User                @relation(fields: [userId], references: [id])
-  checklistSteps ExitChecklistStep[]
-  createdAt      DateTime            @default(now())
-}
-
-model CompanyAsset {
-  id         String  @id @default(cuid())
-  name       String
-  assignedTo String?
-  status     String // e.g., "Returned", "In Use"
-
-  user      User?    @relation(fields: [assignedTo], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ExitChecklistItem {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
-  isMandatory Boolean @default(true)
-
-  checklistSteps ExitChecklistStep[]
-}
-
-model ExitChecklistStep {
-  id            String    @id @default(cuid())
-  userId        String
-  checklistId   String
-  completed     Boolean   @default(false)
-  completedAt   DateTime?
-  exitProcessId String // ✅ FK to ExitProcess
-
-  exitProcess ExitProcess @relation(fields: [exitProcessId], references: [id])
-
-  user      User              @relation(fields: [userId], references: [id])
-  checklist ExitChecklistItem @relation(fields: [checklistId], references: [id])
-}
-
-model ExitFeedback {
-  id        String   @id @default(cuid())
-  userId    String
-  feedback  String
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
-}
