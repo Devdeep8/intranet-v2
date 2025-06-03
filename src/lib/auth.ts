@@ -12,7 +12,7 @@ declare module "next-auth" {
       user_id: string
       name: string
       email: string
-      departmentId: string
+      // departmentId: string
       roleId?: string | null
     }
   }
@@ -21,7 +21,7 @@ declare module "next-auth" {
     id: string
     name: string
     email: string
-    departmentId: string 
+    // departmentId: string 
     roleId?: string | null
     avatarUrl? : string | null
     initials? : string | null
@@ -63,7 +63,7 @@ export const authOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          departmentId: user.departmentId,
+          // departmentId: user.departmentId ?? null,
           roleId: user.roleId
         } satisfies User
       }
@@ -75,7 +75,7 @@ export const authOptions = {
         token.user_id = user.id?? null
         token.name = user.name
         token.email = user.email
-        token.departmentId = user.departmentId ?? null
+        // token.departmentId = user.departmentId ?? null
         token.roleId = user.roleId ?? null
       }
       return token
@@ -85,7 +85,7 @@ export const authOptions = {
         user_id: token.user_id,
         name: token.name,
         email: token.email,
-        departmentId: token.departmentId ,
+        // departmentId: token.departmentId ,
         roleId: token.roleId ?? null
       }
       return session

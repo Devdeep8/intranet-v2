@@ -12,8 +12,9 @@ export async function authenticate(
       redirect: false, // 🔥 prevent server-side redirect
       email: formData.get('email'),
       password: formData.get('password'),
-      callbackUrl: '/dashboard',
+      callbackUrl: '/auth/login', // 🔥
     })
+    console.log(res, "res from login action")
     return {
       success: true,
       message: 'Login successful.',

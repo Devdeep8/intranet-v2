@@ -1932,6 +1932,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tabler/icons-react@npm:^3.34.0":
+  version: 3.34.0
+  resolution: "@tabler/icons-react@npm:3.34.0"
+  dependencies:
+    "@tabler/icons": 3.34.0
+  peerDependencies:
+    react: ">= 16"
+  checksum: d482145ac69b29b9d19de6269725615d50159374076857fe4f16f69cf8b75442b92a93e882da75704dbe30cfbe3a3ca67cd4673b28880aba5c77531d15df45a5
+  languageName: node
+  linkType: hard
+
+"@tabler/icons@npm:3.34.0":
+  version: 3.34.0
+  resolution: "@tabler/icons@npm:3.34.0"
+  checksum: 659dc673b62bde12b8418e544d23c022180b32d345e479ba97a3d23531e164d7445716bc0904ce084d08e1ddf9d5fe0da11edd1e86b3c8eda7a53cbca819c162
+  languageName: node
+  linkType: hard
+
 "@tailwindcss/node@npm:4.1.7":
   version: 4.1.7
   resolution: "@tailwindcss/node@npm:4.1.7"
@@ -2095,6 +2113,61 @@ __metadata:
     postcss: ^8.4.41
     tailwindcss: 4.1.7
   checksum: 2e9da7e193e24a26585a123b88a0d09a43c367a0e87b3ee9aef18daf97dee9a6e83925ef5e9c3277a38e1841e2c7f861318708a636330d4cd35aa9e1d2be49b5
+  languageName: node
+  linkType: hard
+
+"@tanstack/history@npm:1.115.0":
+  version: 1.115.0
+  resolution: "@tanstack/history@npm:1.115.0"
+  checksum: 799dfd9ec0eac8492a2f8a33c1aa0177bda14fa845eadfadc9a722546c79c37f07d3b86e8b17170dc46acf88f559f6750148efa2eed1ad39324a94eb9dd817dd
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-router@npm:^1.120.15":
+  version: 1.120.15
+  resolution: "@tanstack/react-router@npm:1.120.15"
+  dependencies:
+    "@tanstack/history": 1.115.0
+    "@tanstack/react-store": ^0.7.0
+    "@tanstack/router-core": 1.120.15
+    jsesc: ^3.1.0
+    tiny-invariant: ^1.3.3
+    tiny-warning: ^1.0.3
+  peerDependencies:
+    react: ">=18.0.0 || >=19.0.0"
+    react-dom: ">=18.0.0 || >=19.0.0"
+  checksum: b12143338260a34f873d21b6a4c71b171d36a8801880c7466b75362cca18138de38d575e760c38c04e9a272536ce73af9b26386c8599642d4685a7054364b27c
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-store@npm:^0.7.0":
+  version: 0.7.1
+  resolution: "@tanstack/react-store@npm:0.7.1"
+  dependencies:
+    "@tanstack/store": 0.7.1
+    use-sync-external-store: ^1.5.0
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 1069b7a68d726b151b8fd5848080cc13fe5eddc3086138eb5b7465ed5886079b8adf191f76ce24da9a2321f3de042bae51ce206d678dc49d877d9bbdc53430a1
+  languageName: node
+  linkType: hard
+
+"@tanstack/router-core@npm:1.120.15":
+  version: 1.120.15
+  resolution: "@tanstack/router-core@npm:1.120.15"
+  dependencies:
+    "@tanstack/history": 1.115.0
+    "@tanstack/store": ^0.7.0
+    tiny-invariant: ^1.3.3
+  checksum: b525abab4b7918009d40309a06f86a911d9f77f3738f108d3479ea8702c118db7aa4c0e6ae34706c6a34df2ca48d606a7fa7c5c60b0f48997187f06b713e5f26
+  languageName: node
+  linkType: hard
+
+"@tanstack/store@npm:0.7.1, @tanstack/store@npm:^0.7.0":
+  version: 0.7.1
+  resolution: "@tanstack/store@npm:0.7.1"
+  checksum: 8a5a0f2cb95b263748ca7c7c81263a5d00478a198845716dd3e7a1fcec3f55f1b9e8875a7218ec1542e522b3599cd91f8b9586103140ab859c8b3a1b5401cdb2
   languageName: node
   linkType: hard
 
@@ -4282,7 +4355,9 @@ __metadata:
     "@radix-ui/react-toggle": ^1.1.8
     "@radix-ui/react-toggle-group": ^1.1.9
     "@radix-ui/react-tooltip": ^1.2.6
+    "@tabler/icons-react": ^3.34.0
     "@tailwindcss/postcss": ^4
+    "@tanstack/react-router": ^1.120.15
     "@types/bcrypt": ^5.0.2
     "@types/node": ^22.15.18
     "@types/nodemailer": ^6.4.17
@@ -4665,6 +4740,15 @@ __metadata:
   version: 1.1.0
   resolution: "jsbn@npm:1.1.0"
   checksum: 944f924f2bd67ad533b3850eee47603eed0f6ae425fd1ee8c760f477e8c34a05f144c1bd4f5a5dd1963141dc79a2c55f89ccc5ab77d039e7077f3ad196b64965
+  languageName: node
+  linkType: hard
+
+"jsesc@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "jsesc@npm:3.1.0"
+  bin:
+    jsesc: bin/jsesc
+  checksum: 19c94095ea026725540c0d29da33ab03144f6bcf2d4159e4833d534976e99e0c09c38cefa9a575279a51fc36b31166f8d6d05c9fe2645d5f15851d690b41f17f
   languageName: node
   linkType: hard
 
@@ -6440,10 +6524,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-invariant@npm:^1.3.1":
+"tiny-invariant@npm:^1.3.1, tiny-invariant@npm:^1.3.3":
   version: 1.3.3
   resolution: "tiny-invariant@npm:1.3.3"
   checksum: 5e185c8cc2266967984ce3b352a4e57cb89dad5a8abb0dea21468a6ecaa67cd5bb47a3b7a85d08041008644af4f667fb8b6575ba38ba5fb00b3b5068306e59fe
+  languageName: node
+  linkType: hard
+
+"tiny-warning@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "tiny-warning@npm:1.0.3"
+  checksum: da62c4acac565902f0624b123eed6dd3509bc9a8d30c06e017104bedcf5d35810da8ff72864400ad19c5c7806fc0a8323c68baf3e326af7cb7d969f846100d71
   languageName: node
   linkType: hard
 

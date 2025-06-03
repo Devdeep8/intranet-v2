@@ -2,6 +2,8 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 import {
   Sidebar,
   SidebarContent,
@@ -24,14 +26,18 @@ import UserDropdown from "@/components/server-sidebar/user-dropdown";
 import { JWT } from "next-auth/jwt";
 
 import { navLinks } from "./nav-links";
+
 export default function SidebarWrapper({
   user,
   children,
 }: {
-
   user: JWT;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+
+  if(!pathname) return (<></>);
+
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background">
@@ -51,16 +57,33 @@ export default function SidebarWrapper({
                 <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {group.items.map((item) => (
-                      <SidebarMenuItem key={item.href}>
-                        <SidebarMenuButton asChild>
-                          <Link href={item.href}>
-                            <item.icon className="h-4 w-4" />
-                            <span>{item.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
+                    {group.items.map((item) => {
+                      const isActive =
+                        pathname === item.href ||
+                        pathname.startsWith(item.href + "/");
+
+                      return (
+                        <SidebarMenuItem key={item.href}>
+                          <SidebarMenuButton asChild>
+                            <Link
+                              href={item.href}
+                              className={clsx(
+                                "flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200",
+                                {
+                                  "bg-muted font-semibold text-primary":
+                                    isActive,
+                                  "text-muted-foreground hover:bg-muted":
+                                    !isActive,
+                                }
+                              )}
+                            >
+                              <item.icon className="h-4 w-4" />
+                              <span>{item.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>

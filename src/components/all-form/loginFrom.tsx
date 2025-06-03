@@ -17,7 +17,6 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     authenticate,
     { success: false, message: '' }
   )
-  console.log(state)
 
   useEffect(() => {
     if (!state?.message) return
@@ -25,7 +24,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     console.log(state , "work")
     if (state.success) {
       toast.success(state.message)
-     redirect('/dashboard')
+     redirect('/auth/login')
     } else {
       toast.error(state.message)
     }

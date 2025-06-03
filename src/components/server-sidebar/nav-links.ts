@@ -25,14 +25,7 @@ export const navLinks = [
       { title: "My Department", href: "/departments", icon: Users },
     ],
   },
-  {
-    label: "Operations",
-    items: [
-      { title: "Onboarding", href: "/onboarding", icon: Shield },
-      { title: "Exit Process", href: "/exit-process", icon: Network },
-      { title: "Company Assets", href: "/assets", icon: Package },
-    ],
-  },
+  
   {
     label: "Personal",
     items: [

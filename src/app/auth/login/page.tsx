@@ -1,13 +1,19 @@
 import { GalleryVerticalEnd } from "lucide-react"
-
-import { LoginForm } from "@/pages/loginFrom"
+import { LoginForm } from "@/components/all-form/loginFrom"
 import { auth } from "@/lib/auth"
+import { getRoleById } from "@/utils/getRole"
+import { redirect } from "next/navigation"
 
 export default async function LoginPage() {
-    const session = await auth()
+  const session = await auth()
 
-    console.log(session , "session cheking ")
-    
+  if (session?.user) {
+    const role = await getRoleById(session.user.roleId as string)
+    if (role) {
+      redirect(`/${role.toLowerCase()}`)
+    }
+  }
+
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
