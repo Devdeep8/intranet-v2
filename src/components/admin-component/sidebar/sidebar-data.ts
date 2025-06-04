@@ -19,16 +19,9 @@ import {
   IconUserOff,
   IconUsers,
 } from '@tabler/icons-react'
-import { AudioWaveform, Command, GalleryVerticalEnd } from 'lucide-react'
 import { type SidebarData } from './types'
 
-export const  sidebarData: SidebarData = { 
-  user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
- 
+export const  sidebarData: SidebarData = {
   navGroups: [
     {
       title: 'General',
@@ -59,35 +52,22 @@ export const  sidebarData: SidebarData = {
           url: '/users',
           icon: IconUsers,
         },
-        
       ],
     },
     {
-      title: 'Pages',
+      title: 'RBAC',
       items: [
         {
-          title: 'Auth',
+          title: 'RBAC',
           icon: IconLockAccess,
           items: [
             {
-              title: 'Sign In',
-              url: '/sign-in',
+              title: 'Roles',
+              url: '/roles',
             },
             {
-              title: 'Sign In (2 Col)',
-              url: '/sign-in-2',
-            },
-            {
-              title: 'Sign Up',
-              url: '/sign-up',
-            },
-            {
-              title: 'Forgot Password',
-              url: '/forgot-password',
-            },
-            {
-              title: 'OTP',
-              url: '/otp',
+              title: 'Permission',
+              url: '/permissions',
             },
           ],
         },

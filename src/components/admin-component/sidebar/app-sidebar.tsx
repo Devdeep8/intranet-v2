@@ -5,6 +5,7 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarProvider,
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { NavGroup } from './nav-group'
@@ -18,6 +19,7 @@ type AppSidebarProps = React.ComponentProps<typeof Sidebar> & {
 
 export function AppSidebar({ user,...props }: AppSidebarProps) {
   return (
+
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader>
         <div className="flex items-center gap-2">

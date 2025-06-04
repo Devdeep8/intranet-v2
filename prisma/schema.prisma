@@ -69,30 +69,6 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
-model User {
-  id            String  @id @default(cuid())
-  name          String
-  email         String  @unique
-  password      String
-  image         String?
-  roleId        String?
-
-  accounts      Account[]
-  sessions      Session[]
-  // Optional for WebAuthn support
-  Authenticator Authenticator[]
-  // department    Department          @relation(fields: [departmentId], references: [id])
-  role          Role?                @relation(fields: [roleId], references: [id])
-  // tasks         Task[]              @relation("AssignedTasks")
-  // project       Project[]
-  // comments      Comment[]
-  // notifications Notification[]
-  // activityLogs  ActivityLog[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model Role {
   id          String           @id @default(cuid())
   name        String           @unique
@@ -122,16 +98,58 @@ model RolePermission {
   @@id([roleId, permissionId])
 }
 
-// model Department {
-//   id        String    @id @default(cuid())
-//   name      String    @unique
-//   users     User[]
-//   projects  Project[]
-//    resources     Resource[]
-//   announcements Announcement[]
-//   createdAt DateTime  @default(now())
-//   updatedAt DateTime  @updatedAt
-// }
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  password     String
+  image        String?
+  roleId       String?
+  departmentId String?
+
+  accounts      Account[]
+  sessions      Session[]
+  Authenticator Authenticator[]
+
+  // User belongs to a Department (optional)
+  department    Department? @relation("DepartmentUsers", fields: [departmentId], references: [id], onDelete: SetNull)
+
+  // User can be the head of exactly one Department (one-to-one)
+  headOfDepartment Department? @relation("DepartmentHead")
+
+  role          Role?      @relation(fields: [roleId], references: [id])
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  priority    Int?     @default(99)
+
+  headId      String?  @unique
+
+  // Head user relation (one-to-one)
+  head        User?    @relation("DepartmentHead", fields: [headId], references: [id], onDelete: SetNull)
+
+  // All users belonging to this department (one-to-many)
+  users       User[]   @relation("DepartmentUsers")
+
+  status      DepartmentStatus @default(ACTIVE)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum DepartmentStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+
 
 // model Resource {
 //   id            String   @id @default(cuid())
@@ -152,7 +170,6 @@ model RolePermission {
 //   createdAt     DateTime  @default(now())
 // }
 
-
 // model Project {
 //   id           String    @id @default(cuid())
 //   name         String
@@ -167,7 +184,6 @@ model RolePermission {
 //   createdAt  DateTime   @default(now())
 //   updatedAt  DateTime   @updatedAt
 // }
-
 
 // enum ProjectStatus {
 //   NOT_STARTED
@@ -228,5 +244,3 @@ model RolePermission {
 
 //   user User @relation(fields: [userId], references: [id])
 // }
-
-
