@@ -103,6 +103,7 @@ model User {
   name         String
   email        String    @unique
   password     String
+  isOnboarded  Boolean             @default(false)
   image        String?
   roleId       String?
   departmentId String?
@@ -110,6 +111,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
+
+  //onboarding task 
+
+  onboardingTasks  UserOnboardingTask[]
 
   // User belongs to a Department (optional)
   department    Department? @relation("DepartmentUsers", fields: [departmentId], references: [id], onDelete: SetNull)
@@ -149,7 +154,37 @@ enum DepartmentStatus {
   ARCHIVED
 }
 
+model OnboardingTask {
+  id          String                  @id @default(cuid())
+  title       String
+  description String?
+  isMandatory Boolean                @default(true)
+  order       Int                    @default(0)
+  createdAt   DateTime               @default(now())
+  updatedAt   DateTime               @updatedAt
 
+  assignedTo  UserOnboardingTask[]
+}
+
+model UserOnboardingTask {
+  id               String            @id @default(cuid())
+  userId           String
+  onboardingTaskId String
+  status           TaskStatus        @default(PENDING)
+  notes            String?
+
+  user             User              @relation(fields: [userId], references: [id])
+  onboardingTask   OnboardingTask    @relation(fields: [onboardingTaskId], references: [id])
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@unique([userId, onboardingTaskId]) // ensures one task per user
+}
+
+enum TaskStatus {
+  PENDING
+  COMPLETED
+}
 
 // model Resource {
 //   id            String   @id @default(cuid())

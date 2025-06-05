@@ -1,4 +1,3 @@
-// components/department-dialog.tsx
 "use client"
 
 import {
@@ -20,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useTransition, useState, useEffect } from "react"
+import { useTransition, useState } from "react"
 import { useFormStatus } from "react-dom"
 import { createDepartmentAction } from "@/actions/department"
 import { toast } from "sonner"
@@ -60,7 +59,9 @@ export function DepartmentDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{trigger || <Button>Add Department</Button>}</DialogTrigger>
+      <DialogTrigger asChild>
+        {trigger || <Button>{isEditing ? "Edit Department" : "Add Department"}</Button>}
+      </DialogTrigger>
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
@@ -117,13 +118,16 @@ export function DepartmentDialog({
               id="priority"
               name="priority"
               type="number"
-              defaultValue={initialData?.priority || 99}
+              defaultValue={initialData?.priority ?? 99}
             />
           </div>
 
           <div className="space-y-1">
             <Label htmlFor="headId">Department Head</Label>
-            <Select name="headId" defaultValue={initialData?.headId || ""}>
+            <Select
+              name="headId"
+              defaultValue={initialData?.headId ?? ""}
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select user" />
               </SelectTrigger>

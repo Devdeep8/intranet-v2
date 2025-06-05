@@ -1,7 +1,7 @@
 import {
   IconBarrierBlock,
   IconBrowserCheck,
-  IconBug,
+  IconUserCode ,
   IconChecklist,
   IconError404,
   IconHelp,
@@ -69,36 +69,20 @@ export const  sidebarData: SidebarData = {
               title: 'Permission',
               url: '/permissions',
             },
+            {
+              title: 'Roles-Permission',
+              url: '/roles-permission',
+            },
           ],
         },
         {
-          title: 'Errors',
-          icon: IconBug,
+          title: 'Onboarding',
+          icon: IconUserCode,
           items: [
             {
-              title: 'Unauthorized',
-              url: '/401',
+            title: 'Create-Onbording',
+              url: '/create-onbording',
               icon: IconLock,
-            },
-            {
-              title: 'Forbidden',
-              url: '/403',
-              icon: IconUserOff,
-            },
-            {
-              title: 'Not Found',
-              url: '/404',
-              icon: IconError404,
-            },
-            {
-              title: 'Internal Server Error',
-              url: '/500',
-              icon: IconServerOff,
-            },
-            {
-              title: 'Maintenance Error',
-              url: '/503',
-              icon: IconBarrierBlock,
             },
           ],
         },
