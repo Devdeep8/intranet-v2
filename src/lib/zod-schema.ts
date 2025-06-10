@@ -20,3 +20,13 @@ export const onboardingTaskSchema = z.object({
 });
 
 export type OnboardingTaskInput = z.infer<typeof onboardingTaskSchema>;
+
+
+export const registerSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  email: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  departmentId: z.string().min(1, "Department is required"),
+});
+
+export type RegisterFormValues = z.infer<typeof registerSchema>;

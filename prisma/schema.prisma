@@ -98,6 +98,8 @@ model RolePermission {
   @@id([roleId, permissionId])
 }
 
+
+// ============= User Management ==============
 model User {
   id           String    @id @default(cuid())
   name         String
@@ -121,6 +123,10 @@ model User {
 
   // User can be the head of exactly one Department (one-to-one)
   headOfDepartment Department? @relation("DepartmentHead")
+
+  // attendance records 
+  attendance    Attendance[]
+
 
   role          Role?      @relation(fields: [roleId], references: [id])
 
@@ -185,6 +191,37 @@ enum TaskStatus {
   PENDING
   COMPLETED
 }
+
+
+
+
+// ============= Attandance System ==============
+
+
+model Attendance {
+  id          String      @id @default(cuid())
+  userId      String
+  date        DateTime    @db.Date
+  checkIn     DateTime?   // null if absent
+  checkOut    DateTime?   // null if absent
+  totalHours  Decimal?    @db.Decimal(4, 2) // null if absent
+  status      Status      @default(PRESENT)
+  notes       String?
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@unique([userId, date])
+}
+
+enum Status {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LEAVE
+}
+
+
 
 // model Resource {
 //   id            String   @id @default(cuid())

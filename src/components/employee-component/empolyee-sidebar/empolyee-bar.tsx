@@ -5,10 +5,11 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarProvider,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { NavGroup } from './nav-group'
-import { NavUser } from './nav-user'
+import { NavGroup } from "../../admin-component/sidebar/nav-group"
+import { NavUser } from '../../admin-component/sidebar/nav-user'
 import { sidebarData } from './sidebar-data'
 import { User } from 'next-auth'
 
@@ -22,7 +23,7 @@ export function AppSidebar({ user,...props }: AppSidebarProps) {
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-        <h1 className="text-lg font-semibold">Admin Panel</h1>
+        <h1 className="text-lg font-semibold">Employee Panel</h1>
 
         </div>
       </SidebarHeader>

@@ -1,6 +1,9 @@
+import { Button, buttonVariants } from "@/components/ui/button";
 import { getRoleById } from "@/utils/getRole";
 import { requireUser } from "@/utils/requireUser";
 import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await requireUser()
@@ -10,6 +13,7 @@ export default async function Home() {
   return (
   <div className="flex flex-col items-center justify-center min-h-screen p-4">
     <h1 className="text-4xl font-bold mb-8">Welcome to the Intranet</h1>
+    <Link className={buttonVariants({variant:"default",size:"lg"})} href={`dashboard`}>Get Started</Link>
   </div>
   );
 }

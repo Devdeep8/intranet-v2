@@ -1,5 +1,6 @@
 "use client"
 import Link from 'next/link'
+import { signOut } from 'next-auth/react'
 import {
   BadgeCheck,
   Bell,
@@ -29,12 +30,20 @@ import { User } from 'next-auth'
 interface NavUserProps {
   user: User
 }
-export function NavUser({
-  user,
-}: 
-  NavUserProps
-) {
+
+export function NavUser({ user }: NavUserProps) {
   const { isMobile } = useSidebar()
+
+  const handleSignOut = async () => {
+    try {
+      await signOut({
+        callbackUrl: '/', // Redirect to home page after logout
+        redirect: true
+      })
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   return (
     <SidebarMenu>
@@ -46,7 +55,10 @@ export function NavUser({
               className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
             >
               <Avatar className='h-8 w-8 rounded-lg'>
-                <AvatarFallback className='rounded-lg'>SN</AvatarFallback>
+                <AvatarImage src={user.image} alt={user.name} />
+                <AvatarFallback className='rounded-lg'>
+                  {user.name?.slice(0, 2).toUpperCase() || 'SN'}
+                </AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
                 <span className='truncate font-semibold'>{user.name}</span>
@@ -64,7 +76,10 @@ export function NavUser({
             <DropdownMenuLabel className='p-0 font-normal'>
               <div className='flex items-center gap-2 px-1 py-1.5 text-left text-sm'>
                 <Avatar className='h-8 w-8 rounded-lg'>
-                  <AvatarFallback className='rounded-lg'>SN</AvatarFallback>
+                  <AvatarImage src={user.image} alt={user.name} />
+                  <AvatarFallback className='rounded-lg'>
+                    {user.name?.slice(0, 2).toUpperCase() || 'SN'}
+                  </AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>{user.name}</span>
@@ -101,7 +116,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>

@@ -37,7 +37,7 @@ const initialState: FormState = {
   errors: {},
 };
 
-export function OnboardingTaskForm() {
+export function OnboardingTaskForm({onSuccess} : any) {
   const [state, formAction] = useActionState<FormState, FormData>(
     createOnboardingTask,
     initialState

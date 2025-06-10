@@ -10,7 +10,12 @@ export default async function LoginPage() {
   if (session?.user) {
     const role = await getRoleById(session.user.roleId as string)
     if (role) {
-      redirect(`/${role.toLowerCase()}`)
+      // Redirect admin to /admin, others to /dashboard
+      if (role.toLowerCase() === 'admin') {
+        redirect('/admin')
+      } else {
+        redirect('/dashboard')
+      }
     }
   }
 
@@ -22,7 +27,6 @@ export default async function LoginPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            Acme Inc.
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">

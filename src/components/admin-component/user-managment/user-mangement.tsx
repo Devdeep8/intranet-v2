@@ -14,6 +14,7 @@ import {
   TableRow
 } from "@/components/ui/table";
 import UserForm from "@/components/all-form/user-form";
+import { deleteUser } from "@/actions/user";
 
 type UserWithRole = User & { role: Role | null };
 
@@ -28,8 +29,8 @@ export default function UserPage({ roles, users: initialUsers }: Props) {
 
   const handleDelete = async (id: string) => {
     try {
-      const res = await fetch("/api/users/" + id, { method: "DELETE" }); // You can convert to server action too
-      if (res.ok) {
+      const res = await deleteUser(id); // You can convert to server action too
+      if (res) {
         setUsers(prev => prev.filter(user => user.id !== id));
         toast.success("User deleted");
       } else throw new Error();
