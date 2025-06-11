@@ -37,16 +37,16 @@ export const  sidebarData: SidebarData = {
           icon: IconChecklist,
         },
         {
-          title: 'Apps',
-          url: '/apps',
+          title: 'Projects',
+          url: '/project-admin',
           icon: IconPackages,
         },
-        {
-          title: 'Chats',
-          url: '/chats',
-          badge: '3',
-          icon: IconMessages,
-        },
+        // {
+        //   title: 'Chats',
+        //   url: '/chats',
+        //   badge: '3',
+        //   icon: IconMessages,
+        // },
         {
           title: 'Users',
           url: '/users',

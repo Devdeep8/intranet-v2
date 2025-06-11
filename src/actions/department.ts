@@ -68,6 +68,33 @@ export async function getDepartments() {
   }
 }
 
+export async function getUsersByDepartment(departmentId: string) {
+  try {
+    const users = await prisma.user.findMany({
+      where: {
+        departmentId,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      },
+    });
+
+    return {
+      success: true,
+      users,
+    };
+  } catch (error) {
+    console.error("Failed to fetch users by department:", error);
+    return {
+      success: false,
+      message: "Error fetching users from the department.",
+      users: [],
+    };
+  }
+}
+
 
 export async function deleteDepartments(id: string) {
   try {
@@ -134,5 +161,45 @@ export async function updateDepartment(payload : FormData) {
       success: false,
       message: "Failed to update department. It may not exist or is already deleted.",
     }
+  }
+}
+
+
+
+export async function getProjectsByDepartment(departmentId: string) {
+  try {
+    const projects = await prisma.project.findMany({
+      where: {
+        departmentId,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        startDate: true,
+        endDate: true,
+        status: true,
+        billable: true,
+        createdBy: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+       
+      },
+    });
+
+    return {
+      success: true,
+      projects,
+    };
+  } catch (error) {
+    console.error("Failed to fetch projects by department:", error);
+    return {
+      success: false,
+      message: "Error fetching projects from the department.",
+      projects: [],
+    };
   }
 }
