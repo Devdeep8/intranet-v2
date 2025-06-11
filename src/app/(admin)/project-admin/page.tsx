@@ -11,7 +11,7 @@ export default async function ProjectAdminPage() {
   ]);
 
   // Transform departments to match the expected format
-  const departmentOptions = departments.map(dept => ({
+  const departmentOptions = departments.map((dept: { id: any; name: any; }) => ({
     id: dept.id,
     name: dept.name,
   }));
@@ -19,7 +19,7 @@ export default async function ProjectAdminPage() {
   // Transform users to include current user and others
 
 
-  const userOptions = users.map(user => ({
+  const userOptions = users.map((user: { id: any; name: any; email: any; }) => ({
     id: user.id,
     name: user?.name || 'Unknown',
     email: user?.email || 'No email',

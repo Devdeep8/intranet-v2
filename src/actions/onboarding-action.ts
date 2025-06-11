@@ -129,7 +129,7 @@ export async function deleteOnboardingTask(id : string) {
 
     // Update order for remaining tasks
     await prisma.$transaction(
-      remainingTasks.map((task, index) =>
+      remainingTasks.map((task: { id: any; }, index: any) =>
         prisma.onboardingTask.update({
           where: { id: task.id },
           data: { order: deletedTask.order + index }

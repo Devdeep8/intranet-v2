@@ -72,7 +72,7 @@ export function LoginForm({
         <SubmitBtn text="Sign in" />
       </div>
       <p className="text-sm text-center text-muted-foreground">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <a href="/auth/register" className="font-medium text-primary hover:underline">
           Sign up
         </a>

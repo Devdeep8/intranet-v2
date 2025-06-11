@@ -42,7 +42,7 @@ export async function registerUser(formData: FormData): Promise<void> {
   const tasks = await prisma.onboardingTask.findMany();
   if (tasks.length > 0) {
     await prisma.userOnboardingTask.createMany({
-      data: tasks.map(task => ({
+      data: tasks.map((task: { id: any; }) => ({
         userId: user.id,
         onboardingTaskId: task.id,
         status: "PENDING",

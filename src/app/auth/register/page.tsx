@@ -47,7 +47,7 @@ export default async function RegisterPage() {
               required
             >
               <option value="">Select department</option>
-              {departments.map((dept) => (
+              {departments.map((dept :any) => (
                 <option key={dept.id} value={dept.id}>
                   {dept.name}
                 </option>

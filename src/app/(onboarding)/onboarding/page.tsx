@@ -17,7 +17,7 @@ export default async function OnboardingPage() {
     orderBy: { onboardingTask: { order: "asc" } }
   });
 
-  const allCompleted = tasks.length > 0 && tasks.every(t => t.status === "COMPLETED");
+  const allCompleted = tasks.length > 0 && tasks.every((t: { status: string; }) => t.status === "COMPLETED");
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-8">
