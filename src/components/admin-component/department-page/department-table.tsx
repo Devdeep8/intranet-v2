@@ -170,18 +170,9 @@ export function DepartmentTable({
               Copy department ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View department</DropdownMenuItem>
 
             {/* Instead of wrapping DepartmentDialog here, just use a button that opens it */}
-            <DropdownMenuItem
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation(); // Prevent dropdown from closing
-                setEditOpen(true);
-              }}
-            >
-              Edit department
-            </DropdownMenuItem>
+           
 
             <DropdownMenuSeparator />
             <div className="px-2 py-1.5">

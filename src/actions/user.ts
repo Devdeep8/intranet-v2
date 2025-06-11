@@ -23,6 +23,7 @@ export async function getUser() {
       select: {
         id: true,
         name: true,
+        email: true,
       },
     });
 
@@ -93,7 +94,7 @@ export async function updateUser(
     departmentId?: string | null;
   }
 ) {
-  let updateData: any = {
+  const updateData: any = {
     name: data.name,
     email: data.email,
     roleId: data.roleId,

@@ -98,42 +98,44 @@ model RolePermission {
   @@id([roleId, permissionId])
 }
 
-
 // ============= User Management ==============
 model User {
   id           String    @id @default(cuid())
   name         String
   email        String    @unique
   password     String
-  isOnboarded  Boolean             @default(false)
+  isOnboarded  Boolean   @default(false)
   image        String?
   roleId       String?
   departmentId String?
 
+  // === Auth Relations ===
   accounts      Account[]
   sessions      Session[]
   Authenticator Authenticator[]
 
-  //onboarding task 
+  // === Role & Department ===
+  role              Role?       @relation(fields: [roleId], references: [id])
+  department        Department? @relation("DepartmentUsers", fields: [departmentId], references: [id], onDelete: SetNull)
+  headOfDepartment  Department? @relation("DepartmentHead")
 
-  onboardingTasks  UserOnboardingTask[]
-
-  // User belongs to a Department (optional)
-  department    Department? @relation("DepartmentUsers", fields: [departmentId], references: [id], onDelete: SetNull)
-
-  // User can be the head of exactly one Department (one-to-one)
-  headOfDepartment Department? @relation("DepartmentHead")
-
-  // attendance records 
+  // === Attendance ===
   attendance    Attendance[]
 
+  // === Onboarding Tasks ===
+  onboardingTasks  UserOnboardingTask[]
 
-  role          Role?      @relation(fields: [roleId], references: [id])
+  // === Project Management ===
+  createdProjects       Project[]            @relation("ProjectCreatedBy")
+  assignedTasks         Task[]              @relation("TaskAssignee")
+  projectContributions  ProjectContributor[]
 
+  // === Timestamps ===
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 }
 
+// ============= Department Management ==============
 model Department {
   id          String   @id @default(cuid())
   name        String   @unique
@@ -142,14 +144,11 @@ model Department {
 
   headId      String?  @unique
 
-  // Head user relation (one-to-one)
   head        User?    @relation("DepartmentHead", fields: [headId], references: [id], onDelete: SetNull)
-
-  // All users belonging to this department (one-to-many)
   users       User[]   @relation("DepartmentUsers")
+  projects    Project[]
 
   status      DepartmentStatus @default(ACTIVE)
-
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -184,7 +183,7 @@ model UserOnboardingTask {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 
-  @@unique([userId, onboardingTaskId]) // ensures one task per user
+  @@unique([userId, onboardingTaskId])
 }
 
 enum TaskStatus {
@@ -192,19 +191,14 @@ enum TaskStatus {
   COMPLETED
 }
 
-
-
-
 // ============= Attandance System ==============
-
-
 model Attendance {
   id          String      @id @default(cuid())
   userId      String
   date        DateTime    @db.Date
-  checkIn     DateTime?   // null if absent
-  checkOut    DateTime?   // null if absent
-  totalHours  Decimal?    @db.Decimal(4, 2) // null if absent
+  checkIn     DateTime?
+  checkOut    DateTime?
+  totalHours  Decimal?    @db.Decimal(4, 2)
   status      Status      @default(PRESENT)
   notes       String?
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -221,98 +215,71 @@ enum Status {
   LEAVE
 }
 
+// ============= Project Management System ==============
+model Project {
+  id             String   @id @default(cuid())
+  name           String
+  description    String?
+  startDate      DateTime
+  endDate        DateTime?
+  status         ProjectStatus     @default(NOT_STARTED)
+  billable       Boolean           @default(true)
 
+  departmentId   String
+  createdById    String
 
-// model Resource {
-//   id            String   @id @default(cuid())
-//   title         String
-//   fileUrl       String
-//   departmentId  String
-//   department    Department @relation(fields: [departmentId], references: [id])
-//   createdAt     DateTime  @default(now())
-// }
+  department     Department        @relation(fields: [departmentId], references: [id])
+  createdBy      User              @relation("ProjectCreatedBy", fields: [createdById], references: [id])
+  tasks          Task[]
+  contributors   ProjectContributor[]
 
-// model Announcement {
-//   id            String   @id @default(cuid())
-//   title         String
-//   description   String
-//   eventDate     DateTime?
-//   departmentId  String
-//   department    Department @relation(fields: [departmentId], references: [id])
-//   createdAt     DateTime  @default(now())
-// }
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
 
-// model Project {
-//   id           String    @id @default(cuid())
-//   name         String
-//   departmentId String
-//   startDate    DateTime
-//   endDate      DateTime?
-//   status       ProjectStatus @default(NOT_STARTED)
-//   projectMangerId String
-//   projectManger User        @relation(fields: [projectMangerId], references: [id])
-//   department Department @relation(fields: [departmentId], references: [id])
-//   tasks      Task[]
-//   createdAt  DateTime   @default(now())
-//   updatedAt  DateTime   @updatedAt
-// }
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      ProjectTaskStatus @default(PENDING)
+  billable    Boolean           @default(true)
+  hoursLogged Decimal?          @db.Decimal(5, 2)
 
-// enum ProjectStatus {
-//   NOT_STARTED
-//   IN_PROGRESS
-//   COMPLETED
-//   ON_HOLD
-// }
+  projectId   String
+  assigneeId  String
 
-// model Task {
-//   id          String    @id @default(cuid())
-//   title       String
-//   description String
-//   status      String
-//   priority    String
-//   dueDate     DateTime?
-//   assigneeId  String
-//   projectId   String
+  project     Project @relation(fields: [projectId], references: [id])
+  assignee    User    @relation("TaskAssignee", fields: [assigneeId], references: [id])
 
-//   assignee  User      @relation(name: "AssignedTasks", fields: [assigneeId], references: [id])
-//   project   Project   @relation(fields: [projectId], references: [id])
-//   comments  Comment[]
-//   createdAt DateTime  @default(now())
-//   updatedAt DateTime  @updatedAt
-// }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
 
-// model Comment {
-//   id      String @id @default(cuid())
-//   content String
-//   userId  String
-//   taskId  String
+model ProjectContributor {
+  id         String   @id @default(cuid())
 
-//   user      User     @relation(fields: [userId], references: [id])
-//   task      Task     @relation(fields: [taskId], references: [id])
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-// }
+  projectId  String
+  userId     String
 
-// model Notification {
-//   id      String  @id @default(cuid())
-//   userId  String
-//   type    String
-//   message String
-//   read    Boolean @default(false)
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-//   user      User     @relation(fields: [userId], references: [id])
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @default(now())
-// }
+  createdAt  DateTime @default(now())
 
-// model ActivityLog {
-//   id          String   @id @default(cuid())
-//   userId      String
-//   action      String
-//   entity      String?
-//   entityId    String?
-//   description String?
-//   createdAt   DateTime @default(now())
+  @@unique([projectId, userId])
+}
 
-//   user User @relation(fields: [userId], references: [id])
-// }
+enum ProjectStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+}
+
+enum ProjectTaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  BLOCKED
+}

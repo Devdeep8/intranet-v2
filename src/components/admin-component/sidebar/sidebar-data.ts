@@ -1,22 +1,17 @@
 import {
-  IconBarrierBlock,
   IconBrowserCheck,
   IconUserCode ,
   IconChecklist,
-  IconError404,
   IconHelp,
   IconLayoutDashboard,
   IconLock,
   IconLockAccess,
-  IconMessages,
   IconNotification,
   IconPackages,
   IconPalette,
-  IconServerOff,
   IconSettings,
   IconTool,
   IconUserCog,
-  IconUserOff,
   IconUsers,
 } from '@tabler/icons-react'
 import { type SidebarData } from './types'
@@ -37,16 +32,16 @@ export const  sidebarData: SidebarData = {
           icon: IconChecklist,
         },
         {
-          title: 'Apps',
-          url: '/apps',
+          title: 'Projects',
+          url: '/project-admin',
           icon: IconPackages,
         },
-        {
-          title: 'Chats',
-          url: '/chats',
-          badge: '3',
-          icon: IconMessages,
-        },
+        // {
+        //   title: 'Chats',
+        //   url: '/chats',
+        //   badge: '3',
+        //   icon: IconMessages,
+        // },
         {
           title: 'Users',
           url: '/users',
