@@ -5,12 +5,7 @@ import {
   FileText,
   FolderTree,
   Home,
-  LayoutDashboard,
-  Network,
-  Package,
-  Shield,
   Users,
-  Search,
 } from "lucide-react";
 
 

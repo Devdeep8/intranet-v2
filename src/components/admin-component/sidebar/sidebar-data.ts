@@ -1,22 +1,17 @@
 import {
-  IconBarrierBlock,
   IconBrowserCheck,
   IconUserCode ,
   IconChecklist,
-  IconError404,
   IconHelp,
   IconLayoutDashboard,
   IconLock,
   IconLockAccess,
-  IconMessages,
   IconNotification,
   IconPackages,
   IconPalette,
-  IconServerOff,
   IconSettings,
   IconTool,
   IconUserCog,
-  IconUserOff,
   IconUsers,
 } from '@tabler/icons-react'
 import { type SidebarData } from './types'

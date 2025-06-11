@@ -10,9 +10,10 @@ import SubmitBtn from "@/components/reauable-button-from/submitBtn"
 import { authenticate, AuthResult } from '@/actions/loginAction'
 import { redirect } from 'next/navigation'
 
-interface LoginFormProps extends React.ComponentPropsWithoutRef<'form'> {}
-
-export function LoginForm({ className, ...props }: LoginFormProps) {
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'form'>) {
   const [state, formAction] = useActionState<AuthResult, FormData>(
     authenticate,
     { success: false, message: '' }
@@ -24,7 +25,7 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
     console.log(state , "work")
     if (state.success) {
       toast.success(state.message)
-     redirect('/auth/login')
+      redirect('/auth/login')
     } else {
       toast.error(state.message)
     }
@@ -70,12 +71,12 @@ export function LoginForm({ className, ...props }: LoginFormProps) {
 
         <SubmitBtn text="Sign in" />
       </div>
-        <p className="text-sm text-center text-muted-foreground">
-    Don't have an account?{' '}
-    <a href="/auth/register" className="font-medium text-primary hover:underline">
-      Sign up
-    </a>
-  </p>
+      <p className="text-sm text-center text-muted-foreground">
+        Don't have an account?{' '}
+        <a href="/auth/register" className="font-medium text-primary hover:underline">
+          Sign up
+        </a>
+      </p>
     </form>
   )
 }

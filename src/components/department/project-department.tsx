@@ -11,7 +11,7 @@ interface ProjectDepartmentProps {
 
 export function ProjectDepartment({ projects }: ProjectDepartmentProps) {
     console.log("Projects in ProjectDepartment:", projects);
-  if (projects.length === 0) {
+    if (!Array.isArray(projects) || projects.length === 0) {
     return <p>No projects available.</p>;
   }
 
@@ -63,3 +63,5 @@ export function ProjectDepartment({ projects }: ProjectDepartmentProps) {
 </div>
   );
 }
+
+export default ProjectDepartment;

@@ -1,9 +1,7 @@
-import { Button, buttonVariants } from "@/components/ui/button";
+import {  buttonVariants } from "@/components/ui/button";
 import { getRoleById } from "@/utils/getRole";
 import { requireUser } from "@/utils/requireUser";
-import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
   const user = await requireUser()

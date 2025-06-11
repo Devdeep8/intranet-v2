@@ -11,6 +11,19 @@ type DepartmentHeadInfoProps = {
 }
 
 export default function DepartmentHeadInfo({ head }: DepartmentHeadInfoProps) {
+  if (!head) {
+    return (
+      <Card className="w-sm">
+        <CardHeader>
+          <CardTitle>Department Head</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">No department head assigned.</p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className="w-sm">
       <CardHeader>
@@ -23,9 +36,10 @@ export default function DepartmentHeadInfo({ head }: DepartmentHeadInfoProps) {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium text-muted-foreground">Email</span>
-         <MailLink email={head.email} className="text-sm text-foreground" />
+          <MailLink email={head.email} className="text-sm text-foreground" />
         </div>
       </CardContent>
     </Card>
   )
 }
+

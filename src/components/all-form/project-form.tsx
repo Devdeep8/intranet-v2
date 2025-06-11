@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { Calendar, Users, Building, Clock, DollarSign, FileText, CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
+import { Calendar, Users, Building, DollarSign, FileText,  } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,7 +12,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { createProject } from '@/actions/project-action';
-import { fromTheme } from 'tailwind-merge';
 
 // Type definitions
 interface Department {

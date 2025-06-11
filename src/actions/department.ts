@@ -37,10 +37,11 @@ export async function createDepartmentAction(data: FormData) {
       success: true,
       message: "Department created successfully.",
     };
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Error creating department:", error);
     return {
+      
       success: false,
-      message: error.message || "Failed to create department.",
     };
   }
 }
